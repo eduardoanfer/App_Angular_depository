@@ -1,2 +1,20 @@
-<app-toolbar-navigation></app-toolbar-navigation>
+<app-toolbar-navigation>
+</app-toolbar-navigation>
+<div class="grid">
+  <div class="col-12">
+    <!-- Gráfico de produtos em estoque -->
+    <p-card
+      header="Quantidade de produtos em Estoque"
+      styleClass="shadow-3 m-5 text-indigo-800">
 
+      <p-chart
+        type="bar"
+        [data]="productsChartDatas"
+        [options]="productsChartOptions"
+        style="height: 400px;"
+      >
+      </p-chart>
+
+    </p-card>
+  </div>
+</div>

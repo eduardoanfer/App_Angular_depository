@@ -1,19 +1,23 @@
 import { Conditional } from '@angular/compiler';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { FormBuilder} from '@angular/forms'; // Adicionado FormBuilder
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
+import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
+// Adicionado FormBuilder
 import { SignupUserRequest } from 'src/app/models/interfaces/user/SignupUserRequest';
 import { UserService } from 'src/app/services/user/user.service';
-import { CookieService } from 'ngx-cookie-service';
-import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
-import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy{
+  private destroy$ = new Subject<void>();
   loginCard = true; // fazendo uma logica para o outro card somente aparecer quando sair do outro card
 
   //Formulário de login
@@ -44,7 +48,11 @@ export class HomeComponent {
 
   onSubmitLoginForm(): void {
     if (this.loginForm.valid) {
-      this.userService.authUser(this.loginForm.value as AuthRequest).subscribe({
+      this.userService.authUser(this.loginForm.value as AuthRequest)
+      .pipe(
+        takeUntil(this.destroy$) // Fazendo o unsubscribe do observable - o takeuntil é um operador do rxjs que faz o unsubscribe do observable quando o componente é destruído e ele vai receber um subject que criei ali encima que vai emitir um valor quando o componente for destruído
+      )
+      .subscribe({
         next: (response) => {
           if (response) {
             this.cookieService.set('USER_INFO', response?.token); // Salva o token no cookie
@@ -74,7 +82,11 @@ export class HomeComponent {
   // Método para envio do formulário de cadastro
   onSubmitSignupForm(): void {
     if (this.signupForm.valid) {
-      this.userService.signupUser(this.signupForm.value as SignupUserRequest).subscribe({
+      this.userService.signupUser(this.signupForm.value as SignupUserRequest)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
         next: (response) => {
           if (response) {
             alert('Usuário cadastrado com sucesso!');
@@ -94,4 +106,11 @@ export class HomeComponent {
       });
     }
   }
+  //evitar vazamento de memoria
+  ngOnDestroy(): void {
+    this.destroy$.next(); // Emite um valor para o subject
+    this.destroy$.complete(); // Completa o subject
+  }
+
+
 }
