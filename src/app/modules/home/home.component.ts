@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -34,8 +35,10 @@ export class HomeComponent {
     private formBuilder: FormBuilder,
     private userService : UserService, // importando o servico de usuario
     private cookieService: CookieService, // importando o cookie service
-    private  messageService: MessageService // importando o message service
-  // o message service é um serviço do primeng que serve para mostrar mensagens de sucesso ou erro
+    private  messageService: MessageService, // importando o message service   o message service é um serviço do primeng que serve para mostrar mensagens de sucesso ou erro
+    private router: Router,
+
+
 
   ) {}
 
@@ -46,7 +49,8 @@ export class HomeComponent {
           if (response) {
             this.cookieService.set('USER_INFO', response?.token); // Salva o token no cookie
             this.loginForm.reset(); // Reseta o formulário
-
+            this.router.navigate(['/dashboard']); // Redireciona para o dashboard assim que o login for bem-sucedido
+            // Exibe mensagem de sucesso
             this.messageService.add({
               severity: 'success',
               summary: 'Login realizado com sucesso!',
