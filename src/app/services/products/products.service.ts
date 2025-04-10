@@ -5,6 +5,7 @@ import { environments } from 'src/app/environments/environments';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GetAllProductsResponse } from 'src/app/models/interfaces/products/request/response/GetAllProductsResponse';
+import { DeleteProductResponse } from 'src/app/models/interfaces/products/request/response/DeleteProductResponse';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,5 +33,17 @@ export class ProductsService {
     .pipe(map((products)=>products.filter((data) => data?.amount > 0))); // Filtra produtos com amount > 0
 
   } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
+
+  deleteProduct(product_id: string): Observable<DeleteProductResponse> {
+    return this.http.delete<DeleteProductResponse>(
+      `${this.API_URL.API_URL}/product/delete`, // aqui coloco a url do backend (rota)
+     {
+      ...this.httpOptions,
+      params : { product_id : product_id} // aqui coloco a url do backend (rota)
+     },
+
+    );
+  } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
+
 }
 

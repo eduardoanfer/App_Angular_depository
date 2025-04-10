@@ -20,12 +20,16 @@ import { ProductsHomeComponent } from './page/products-home/products-home.compon
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProductsTableComponent } from './components/products-table/products-table.component';
 import { CardModule } from 'primeng/card';
+import { ProductFormComponent } from './components/products-table/product-form/product-form.component';
+
 
 
 @NgModule({
   declarations: [
     ProductsHomeComponent,
     ProductsTableComponent,
+    ProductFormComponent,
+    
   ],
   imports: [
     CommonModule,

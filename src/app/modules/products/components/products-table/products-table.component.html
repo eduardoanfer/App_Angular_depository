@@ -132,8 +132,8 @@
               class="p-button-rounded p-button-danger"
               pTooltip="Remover produto"
               tooltipPosition="top"
-              (click)="handleProductEvent(saleProductEvent, product?.id)
-              ">
+              (click)="handleDeleteProduct(product?.id, product?.name)"
+              > <!--Esta emitindo o valor id e nome para tratamento futuro.-->
 
               </button>
             </div>

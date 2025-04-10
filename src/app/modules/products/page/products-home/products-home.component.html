@@ -1,7 +1,10 @@
 <app-toolbar-navigation></app-toolbar-navigation>
 <!--Passamos com os dados de imput de produtos-->
-<app-products-table [products]="productsDatas"
-(productEvent)="handleProductAction( $event )"
->
+<app-products-table
+  [products]="productsDatas"
+  (productEvent)="handleProductAction($event)"
+  (deleteProductEvent)="handleDeleteProduct($event)"
 
+  >
 </app-products-table>
+<p-confirmDialog [style]="{wisth: '50vw'}"></p-confirmDialog>
