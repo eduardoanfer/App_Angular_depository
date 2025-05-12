@@ -3,8 +3,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
+import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { GetCategoriesResponse } from 'src/app/services/categories/response/GetCategoriesResponse';
+import { ProductsService } from 'src/app/services/products/products.service';
 
 @Component({
   selector: 'app-product-form',
@@ -26,6 +28,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoriesService: CategoriesService,
+    private productsService: ProductsService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private router: Router
@@ -56,8 +59,43 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitAddProduct(): void {
-    // Lógica para envio do formulário (pode implementar depois)
-  }
+    if(this.addProductForm.valid && this.addProductForm?.valid) {
+      // Aqui posso fazer  o que quiser com os dados do formulário
+      // Por exemplo, enviar os dados para o servidor ou exibir uma mensagem de sucesso
+      const requestCreateProduct : CreateProductRequest = {
+        name: this.addProductForm.value.name as string,
+        price: this.addProductForm.value.price as unknown as number,
+        description: this.addProductForm.value.description as string,
+        category_id: this.addProductForm.value.category_id as string,
+        amount: this.addProductForm.value.amount as number,
+      };
+      this.productsService
+        .createProduct(requestCreateProduct)
+        .pipe(takeUntil(this.destroy$)) // Chama o método createProduct do serviço
+        // e passa o objeto requestCreateProduct como parâmetro
+        .subscribe({
+          next: (response) => {
+            if(response){
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Produto criado com sucesso!'
+            });
+          }
+          },
+          error: (error) => {
+            console.error('Erro ao criar produto:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Não foi possível criar o produto.',
+            life:2500,
+            });
+          },
+        });
+    }
+    this.addProductForm.reset(); // Limpa o formulário após o envio
+    }
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -5,9 +5,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ProductsDataTransferService } from 'src/app/shared/services/products/products-data-transfer.service';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { GetAllProductsResponse } from 'src/app/models/interfaces/products/request/response/GetAllProductsResponse';
+import { GetAllProductsResponse } from 'src/app/models/interfaces/products/response/GetAllProductsResponse';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
+import { DialogService, DynamicDialogComponent, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ProductFormComponent } from '../../components/products-table/product-form/product-form.component';
+import { Overlay } from 'primeng/overlay';
 
 @Component({
   selector: 'app-products-home',
@@ -16,6 +19,7 @@ import { EventAction } from 'src/app/models/interfaces/products/event/EventActio
 })
 export class ProductsHomeComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  private ref!: DynamicDialogRef;
   public productsDatas: GetAllProductsResponse[] = [];
 
   constructor(
@@ -23,7 +27,8 @@ export class ProductsHomeComponent implements OnDestroy {
     private productsDtService: ProductsDataTransferService,
     private router: Router,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private dialogService: DialogService
 
   ) {
     this.getServiceProductsDatas(); // Chama o método para buscar os dados dos produtos
@@ -65,10 +70,26 @@ export class ProductsHomeComponent implements OnDestroy {
         },
       });
   }
+  // atraves desse metodo conseguimos abrir o modal que é do produto
   handleProductAction(event: EventAction): void {
     if (event) {
-      console.log('Evento recebido do componente filho:', event);
-      // Aqui você pode adicionar qualquer outra lógica necessária
+      this.ref= this.dialogService
+      .open(ProductFormComponent, {
+        header: event?.action,
+        width: '70%',
+        contentStyle:{Overflow:'auto'},
+        baseZIndex: 10000,
+        maximizable: true, // permite maximizar o modal
+        data: {
+          productDatas: this.productsDatas,
+          event: event,
+        }
+        // dados utilizados para recuperar o produto
+      });
+      //takeuntil é utilizado para cancelar a subscrição quando o componente é destruído
+      this.ref.onClose
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({ next: () => this.getAPIProductsDatas(),})
     }
   }
   handleDeleteProduct(event: {
