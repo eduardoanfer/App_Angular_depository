@@ -1,0 +1,75 @@
+<div class="grid">
+  <div class="col-12">
+    <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Categorias de Produtos">
+      <div class="p-card-content">
+      </div>
+      <!--Definindo algumas propetys-->
+      <p-table
+      [value] = "categories"
+      [(selection)]="categorySelected"
+      [rows]="10"
+      [paginator]="true"
+      [responsive]="true"
+      [showCurrentPageReport]="true"
+      [tableStyle]="{'min-width': '75rem'}"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} categorias"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name">
+            <div class="flex justify-content-between align-items-center">
+              <div class="flex justify-content-between align-items-center">
+                Nome
+              </div>
+              <div class="flex justify-content-between align-items-center">
+                <p-sortIcon field="name"></p-sortIcon>
+                <p-columnFilter
+                  type="text"
+                  field="name"
+                  display="menu"
+                  matchMode="contains"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false"
+                ></p-columnFilter>
+              </div>
+            </div>
+          </th>
+          <!-- botão de adicionar  -->
+          <th>
+            <div class="flex justify-content-center">
+              <p-button
+                styleClass="p-button-info"
+                icon="pi pi-plus"
+                label="Adicionar"
+              ></p-button>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-category>
+        <tr>
+          <td>{{ category.name }}</td>
+          <td>
+            <div class="flex justify-content-center gap-3 align-content-center">
+              <p-button
+                styleClass="p-button-warning"
+                icon="pi pi-pencil"
+                label="Editar"
+              ></p-button>
+              <p-button
+                styleClass="p-button-danger"
+                icon="pi pi-trash"
+                label="Deletar"
+              ></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </p-card>
+  </div>
+  <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+</div>

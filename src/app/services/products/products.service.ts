@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { GetAllProductsResponse } from 'src/app/models/interfaces/products/response/GetAllProductsResponse';
 import { DeleteProductResponse } from 'src/app/models/interfaces/products/response/DeleteProductResponse';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
+import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
 @Injectable({
   providedIn: 'root'
 })
@@ -46,11 +47,21 @@ export class ProductsService {
     );
   } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
 
-createProduct(requestDatas:CreateProductRequest): Observable<CreateProductRequest> {
-  return this.http.post<CreateProductRequest>(
-    `${this.API_URL.API_URL}/product/create`, // aqui coloco a url do backend (rota) para criação de produto
-    requestDatas, // esse aqui é meu parametro de entrada, que é o que eu espero receber
-    this.httpOptions // que é o meu objeto criado.
-  );
+  createProduct(requestDatas: CreateProductRequest): Observable<CreateProductRequest> {
+    return this.http.post<CreateProductRequest>(
+      `${this.API_URL.API_URL}/product/create`, // aqui coloco a url do backend (rota) para criação de produto
+      requestDatas, // esse aqui é meu parametro de entrada, que é o que eu espero receber
+      this.httpOptions // que é o meu objeto criado.
+    );
+  }
+  editProduct(requestDatas: EditProductRequest): Observable<void> { //pode ser um void, pois não espero nada de retorno
+    return this.http.put<void>(
+      `${this.API_URL.API_URL}/product/edit`, // aqui coloco a url do backend (rota) para edição de produto
+      requestDatas, // esse aqui é meu parametro de entrada, que é o que eu espero receber
+      this.httpOptions // que é o meu objeto criado.
+    );
+  } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
+
+
 }
-}
+

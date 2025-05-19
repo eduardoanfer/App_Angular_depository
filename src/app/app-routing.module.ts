@@ -24,7 +24,13 @@ const routes: Routes = [
     path: 'products',
     loadChildren: () => import('./modules/products/products.module').then(m => m.ProductsModule),
     canActivate: [AuthGuard], // protegendo a rota de produtos
+  },
+  {
+    path: 'categories',
+    loadChildren: () => import('./modules/categories/categories.module').then(m => m.CategoriesModule),
+    canActivate: [AuthGuard], // protegendo a rota de categorias
   }
+
 ];
 
 @NgModule({

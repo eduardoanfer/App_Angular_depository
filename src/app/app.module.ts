@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './modules/home/home.component';
 import { MessageService } from 'primeng/api';
+import { CategoriesTableComponent } from './modules/categories/components/categories-table/categories-table.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],

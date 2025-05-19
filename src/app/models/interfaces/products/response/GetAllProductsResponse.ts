@@ -1,11 +1,11 @@
 export interface GetAllProductsResponse {
-  id: string; // id do produto
-  name: string; // nome do produto
+  id: string;
+  name: string;
   amount: number;
-  price: string; // preco do produto
-  //category é um objeto que dentro dela tem as propriedades
+  description: string;
+  price: string;
   category: {
-    id: string; // id da categoria
-    name: string; // nome da categoria
+    id: string;
+    name: string;
   }
 }

@@ -1,7 +1,7 @@
-export interface CreateProductRequest {
+export interface EditProductRequest {
   name: string;
   description: string;
   price: string;
-  category_id: string;
+  product_id: string;
   amount: number;
 }
