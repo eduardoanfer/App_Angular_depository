@@ -1,4 +1,4 @@
 export interface deleteCategoryAction {
-  categories_id: string;
-  nproduct_name: string;
+  category_id: string;
+  category_name: string;
 }

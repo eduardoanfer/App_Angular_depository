@@ -4,10 +4,19 @@ import { CookieService } from 'ngx-cookie-service';
 import { environments } from 'src/app/environments/environments';
 import { GetCategoriesResponse } from './response/GetCategoriesResponse';
 import { Observable } from 'rxjs';
+import { CreateCategoryRequest } from 'src/app/models/interfaces/categories/request/CreateCategoryRequest';
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriesService {
+  createCategory(requestDatas: CreateCategoryRequest): Observable<CreateCategoryRequest> {
+    return this.http.post<CreateCategoryRequest>(
+      `${this.API_URL}/categories/create`, // aqui coloco a url do backend (rota) para criação de produto
+      requestDatas, // esse aqui é meu parametro de entrada, que é o que eu espero receber
+      this.htttpOptions // que é o meu objeto criado.
+    );
+    throw new Error('Method not implemented.');
+  }
   private API_URL = environments.API_URL; // URL da API
   private JWT_TOKEN = this.cookie.get('USER_INFO') || ''; // aqui pego o cookie que foi salvo no login ( para o token jwt)
   private htttpOptions = {
@@ -30,4 +39,14 @@ export class CategoriesService {
     );
     }
   // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
+  deleteCategory(requestDatas:{category_id: string}): Observable<void> {
+    return this.http.delete<void>(
+      `${this.API_URL}/categories/delete`,{ // aqui coloco a url do backend (rota)
+        ...this.htttpOptions, params:{
+            category_id: requestDatas?.category_id
+          },
+        }
+    );
+
+  }
 }

@@ -20,6 +20,7 @@ import { ConfirmationService } from 'primeng/api';
 import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
+import { CategoriesFormComponent } from './components/categories-form/categories-form.component';
 
 
 
@@ -27,7 +28,8 @@ import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [
     CategoriesHomeComponent,
-    CategoriesTableComponent
+    CategoriesTableComponent,
+    CategoriesFormComponent
   ],
   // aqui coloco os componentes que quero usar dentro do módulo
   imports: [

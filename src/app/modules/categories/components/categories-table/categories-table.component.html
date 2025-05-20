@@ -44,6 +44,7 @@
                 styleClass="p-button-info"
                 icon="pi pi-plus"
                 label="Adicionar"
+                (onClick)="handleCategoryEvent(addCategoryAction)"
               ></p-button>
             </div>
           </th>
@@ -63,6 +64,7 @@
                 styleClass="p-button-danger"
                 icon="pi pi-trash"
                 label="Deletar"
+                (click)="handleDeleteCategoryEvent(category?.id, category?.name)"
               ></p-button>
             </div>
           </td>
