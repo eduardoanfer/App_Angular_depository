@@ -35,9 +35,16 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     private categoriesService: CategoriesService,
   ){}
 
-  ngOnInit():void{
+  ngOnInit(): void {
+    this.categoryAction = this.ref.data; // aqui eu pego a categoria que foi clicada
 
+    const event = this.categoryAction?.event;
+
+    if (event?.action === this.editCategoryAction && event?.categoryName != null) {
+      this.setCategoryName(event.categoryName);
+    }
   }
+
   handleSubmitAddCategory(): void {
     if (this.categoryForm?.value && this.categoryForm?.valid){
       const requestCreateCategory: {name: string} = {
@@ -67,6 +74,16 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
         life: 3000
       });
     }
+  }
+  handleSubmitCategoryAction(): void {
+
+  }
+  setCategoryName(categoryName: string): void {
+   if (categoryName && categoryName !== '') {
+    this.categoryForm.setValue({
+      name: categoryName,
+    });
+   }
   }
 
   ngOnDestroy(): void {
