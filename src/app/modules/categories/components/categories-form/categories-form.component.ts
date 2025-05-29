@@ -35,6 +35,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     private categoriesService: CategoriesService,
   ){}
 
+<<<<<<< Updated upstream
   ngOnInit(): void {
     this.categoryAction = this.ref.data; // aqui eu pego a categoria que foi clicada
 
@@ -45,6 +46,11 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     }
   }
 
+=======
+  ngOnInit():void{
+
+  }
+>>>>>>> Stashed changes
   handleSubmitAddCategory(): void {
     if (this.categoryForm?.value && this.categoryForm?.valid){
       const requestCreateCategory: {name: string} = {
@@ -75,6 +81,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
       });
     }
   }
+<<<<<<< Updated upstream
   handleSubmitCategoryAction(): void {
 
   }
@@ -85,6 +92,8 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     });
    }
   }
+=======
+>>>>>>> Stashed changes
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -11,7 +11,11 @@ import { CreateCategoryRequest } from 'src/app/models/interfaces/categories/requ
 export class CategoriesService {
   createCategory(requestDatas: CreateCategoryRequest): Observable<CreateCategoryRequest> {
     return this.http.post<CreateCategoryRequest>(
+<<<<<<< Updated upstream
       `${this.API_URL}/category`, // aqui coloco a url do backend (rota) para criação de produto
+=======
+      `${this.API_URL}/categories/create`, // aqui coloco a url do backend (rota) para criação de produto
+>>>>>>> Stashed changes
       requestDatas, // esse aqui é meu parametro de entrada, que é o que eu espero receber
       this.htttpOptions // que é o meu objeto criado.
     );
@@ -41,7 +45,11 @@ export class CategoriesService {
   // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
   deleteCategory(requestDatas:{category_id: string}): Observable<void> {
     return this.http.delete<void>(
+<<<<<<< Updated upstream
       `${this.API_URL}/category/delete`,{ // aqui coloco a url do backend (rota)
+=======
+      `${this.API_URL}/categories/delete`,{ // aqui coloco a url do backend (rota)
+>>>>>>> Stashed changes
         ...this.htttpOptions, params:{
             category_id: requestDatas?.category_id
           },
@@ -49,6 +57,7 @@ export class CategoriesService {
     );
 
   }
+<<<<<<< Updated upstream
   editCategoryName(requestDatas:{category_id: string, category_name: string}): Observable<void> {
     return this.http.put<void>(
       `${this.API_URL}/category/edit`, // aqui coloco a url do backend (rota)
@@ -61,4 +70,6 @@ export class CategoriesService {
       }
     );
   }
+=======
+>>>>>>> Stashed changes
 }
