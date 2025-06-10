@@ -85,7 +85,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
   handleDeleteCategoryAction(event: deleteCategoryAction): void {
     if(event){
       this.confirmationService.confirm({
-        message: `Você tem certeza que deseja deletar a categoria ${event?.category_name}?`,
+        message: `Você tem certeza que deseja deletar a categoria ${event?.name}?`,
         header: 'COnfirmação de exclusão',
         icon: 'pi pi-exclamation-triangle',
         acceptLabel: 'Sim',

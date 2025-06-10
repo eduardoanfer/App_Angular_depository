@@ -25,7 +25,7 @@ handleDeleteCategoryEvent(categories_id: string, categoryName: string): void {
  if(categories_id !== '' && categoryName !== '') {
      this.deleteCategoryEvent.emit ({
       category_id: categories_id,
-      category_name: categoryName
+      name: categoryName
      })
  }
 }

@@ -8,6 +8,7 @@ import { GetAllProductsResponse } from 'src/app/models/interfaces/products/respo
 import { DeleteProductResponse } from 'src/app/models/interfaces/products/response/DeleteProductResponse';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
 import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
+import { SaleProductRequest } from 'src/app/models/interfaces/products/request/SaleProductRequest';
 @Injectable({
   providedIn: 'root'
 })
@@ -62,6 +63,13 @@ export class ProductsService {
     );
   } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
 
-
+  //dentro preciso informar os tipos de dados que espero receber, e o que espero enviar
+  // saleProduct(requestDatas: SaleProductRequest): Observable<void> {
+  //   return this.http.put<void>(
+  //     `${this.API_URL.API_URL}/product/sale`, // aqui coloco a url do backend (rota) para venda de produto
+  //     { product_id, amount }, // esse aqui é meu parametro de entrada, que é o que eu espero receber
+  //     this.httpOptions // que é o meu objeto criado.
+  //   );
+  // } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
 }
 
