@@ -21,14 +21,18 @@ export class ToolbarNavigationComponent {
     // Exibe mensagem de sucesso
   };
   handleSaleProduct(): void {
+    const saleProductAction = ProductEvent.SALE_PRODUCT_EVENT // Define o evento de venda do produto, ele pode ser usado para identificar a ação no modal ele é um enum
     // Aqui você pode implementar a lógica para efetuar a venda do produto
     // Por exemplo, redirecionar para uma página de venda ou abrir um modal
     this.dialogService.open(ProductFormComponent,{
-      header: ProductEvent.SALE_PRODUCT_EVENT,
+      header: saleProductAction,
       width: '70%',
       contentStyle: { overflow: 'auto'},
       baseZIndex: 10000, // Z-index para garantir que o modal fique acima de outros elementos
       maximizable: true, // Permite maximizar o modal
+      data: {
+        event: {action: saleProductAction} // Passa o evento de venda do produto
+      }
   });
 
 }

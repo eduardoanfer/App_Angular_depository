@@ -1,5 +1,5 @@
 import { Conditional } from '@angular/compiler';
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,7 +16,9 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnDestroy{
+export class HomeComponent implements AfterViewInit{
+  @ViewChild('emailInput') public emailInputRef!: ElementRef; // Referência ao input de email ( vai procurar o elemento no DOM por esse nome, que é o nome que dei no html )
+  @ViewChild('PasswordInput') public passwordInputRef!: ElementRef; // Referência ao input de senha // esses dois seram definidos no ngafterviewinit, pois o angular ainda não criou os elementos do html, então não consigo pegar a referencia deles antes disso
   private destroy$ = new Subject<void>();
   loginCard = true; // fazendo uma logica para o outro card somente aparecer quando sair do outro card
 
@@ -45,6 +47,13 @@ export class HomeComponent implements OnDestroy{
 
 
   ) {}
+  ngAfterViewInit(): void {
+    // Aqui você pode adicionar lógica que precisa ser executada após a visualização do componente
+    this.emailInputRef.nativeElement.value = 'Seu email aki'; // Reseta o valor do input de email
+    this.passwordInputRef.nativeElement.value = 'Sua senha aki'; // Reseta o valor do input de senha
+    console.log("Email Input Reference =>", this.emailInputRef.nativeElement.value);
+    console.log("Password Input Reference =>", this.passwordInputRef.nativeElement.value);
+  }
 
   onSubmitLoginForm(): void {
     if (this.loginForm.valid) {

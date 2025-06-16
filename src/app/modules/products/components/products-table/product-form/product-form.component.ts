@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
 import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
+import { SaleProductRequest } from 'src/app/models/interfaces/products/request/SaleProductRequest';
 import { GetAllProductsResponse } from 'src/app/models/interfaces/products/response/GetAllProductsResponse';
 import { ProductEvent } from 'src/app/modules/enums/products/ProductEvent';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
@@ -20,7 +21,7 @@ import { ProductsDataTransferService } from 'src/app/shared/services/products/pr
   styleUrls: []
 })
 export class ProductFormComponent implements OnInit, OnDestroy {
-  private readonly destroy$: Subject<void> = new Subject();
+  private readonly destroy$: Subject<void> = new Subject<void>();
   public categoriesDatas: Array<GetCategoriesResponse> = [];
   public selectedCategory: Array<{name: string; code: string} >= [];
   public productAction!:{
@@ -43,6 +44,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     category_id: ['', Validators.required],
     amount: [0, Validators.required],
   });
+  public saleProductForm = this.formBuilder.group({
+    amount: [0, Validators.required],
+    product_id: ['', Validators.required],
+  });
+  public saleProductSelected!: GetAllProductsResponse; // Produto selecionado para venda
   public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
   public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
   public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT;
@@ -74,12 +80,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 }
 
   getAllCategories(): void {
-    this.categoriesService.getAllCategories()
+    this.categoriesService
+      .getAllCategories()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           if (response.length > 0) {
-            this.categoriesDatas = response; // response aqui é nosso array de categorias
+            this.categoriesDatas = response;
           }
         },
       });
@@ -165,6 +172,37 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         });
     }
    }
+   handleSubmitSaleProduct(): void {
+    if (this.saleProductForm.valid && this.saleProductForm.value) {
+      const requestDatas: SaleProductRequest = {
+        amount: this.saleProductForm.value.amount as number,
+        product_id: this.saleProductForm.value.product_id as string,
+      };
+
+      this.productsService
+        .saleProduct(requestDatas)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            if (response) {
+              this.saleProductForm.reset();
+              this.getProductDatas();
+              this.router.navigate(['/dashboard']);
+            }
+          },
+          error: (error) => {
+            console.error('Erro ao vender produto:', error);
+            this.saleProductForm.reset();
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Não foi possível vender o produto.',
+              life: 2500,
+            });
+          },
+        });
+    }
+  }
   getProductSelectedDatas(product_id: string): void{
     const allProducts = this.productAction?.productsDatas; // é um array de produtos
 

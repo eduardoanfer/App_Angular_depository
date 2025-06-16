@@ -65,7 +65,10 @@ export class ProductsService {
   } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
 
   //dentro preciso informar os tipos de dados que espero receber, e o que espero enviar
-  saleProduct(requestDatas: SaleProductRequest): Observable<void> {
+
+  saleProduct(
+    requestDatas: SaleProductRequest
+  ): Observable<SaleProductResponse> {
     return this.http.put<SaleProductResponse>(
       `${this.API_URL.API_URL}/product/sale`, // aqui coloco a url do backend (rota) para venda de produto
       { amount: requestDatas?.amount
@@ -73,8 +76,8 @@ export class ProductsService {
       {
         ...this.httpOptions, // que é o meu objeto criado.
         params: { product_id: requestDatas?.product_id }, // aqui coloco a url do backend (rota) para venda de produto
-      },
+        },
     );
-  } // ao fazer uma chamada http, o que espero receber é um Observable, então coloco o tipo de retorno do Observable ( para me inscrever)
+  }
 }
 
